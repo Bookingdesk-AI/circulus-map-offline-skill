@@ -8,6 +8,7 @@ Offline-first aviation route planning skill for MCP clients.
 
 Key capabilities:
 - Great-circle and route geometry solving
+- Route input normalization for airport codes, city names, and natural-language connectors
 - ETOPS-aware map workflows
 - Airport lookup and coordinate enrichment
 - Projection comparison support
