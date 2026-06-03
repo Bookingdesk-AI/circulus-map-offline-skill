@@ -13,6 +13,7 @@ Key capabilities:
 - Airport lookup and coordinate enrichment
 - Projection comparison workflow with route-stable geometry notes and projection recommendations
 - Concise great-circle explanations for curved, polar, or dateline-split route displays
+- Edge-case preflight guidance for dateline crossings, polar routes, sparse data, and unsupported locations
 - SVG rendering for export-ready route visuals
 
 ## Best use cases
@@ -39,6 +40,7 @@ Typical startup from project root:
 - `references/mapspec.md` — query/spec authoring notes
 - `references/great-circle-explanations.md` — route-specific projection explanation guidance
 - `references/projection-comparison.md` — compare-mode response pattern for projection differences
+- `references/edge-case-handling.md` — preflight checks and messaging for dateline, polar, sparse-data, and unsupported cases
 - `assets/examples/*` — sample route specs
 - `agents/openai.yaml` — local MCP dependency wiring
 
