@@ -7,15 +7,17 @@ const readmePath = 'README.md';
 const guidePath = 'references/great-circle-explanations.md';
 const comparisonPath = 'references/projection-comparison.md';
 const edgePath = 'references/edge-case-handling.md';
+const exportPath = 'references/export-shareability.md';
 
 const skill = readFileSync(skillPath, 'utf8');
 const readme = readFileSync(readmePath, 'utf8');
 const guide = readFileSync(guidePath, 'utf8');
 const comparison = readFileSync(comparisonPath, 'utf8');
 const edge = readFileSync(edgePath, 'utf8');
+const exportGuide = readFileSync(exportPath, 'utf8');
 
 test('skill links the great-circle explanation guide', () => {
-  assert.match(skill, /version: 1\.3\.27/);
+  assert.match(skill, /version: 1\.3\.28/);
   assert.match(skill, /why a route curves, looks indirect, crosses the pole, or splits near the dateline/);
   assert.match(skill, /references\/great-circle-explanations\.md/);
   assert.equal(existsSync(guidePath), true);
@@ -74,4 +76,25 @@ test('edge-case guide covers dateline, polar, and sparse-data handling', () => {
 test('readme advertises edge-case preflight guidance', () => {
   assert.match(readme, /Edge-case preflight guidance for dateline crossings, polar routes, sparse data, and unsupported locations/);
   assert.match(readme, /references\/edge-case-handling\.md/);
+});
+
+test('skill exposes export share-packet guidance', () => {
+  assert.match(skill, /export, share, embed, or hand off a final route map/);
+  assert.match(skill, /normalized route, projection choice, SVG artifact\/save instruction/);
+  assert.match(skill, /references\/export-shareability\.md/);
+  assert.equal(existsSync(exportPath), true);
+});
+
+test('export guide supports reusable SVG handoffs without changing route flow', () => {
+  assert.match(exportGuide, /Share packet contents/);
+  assert.match(exportGuide, /Route:/);
+  assert.match(exportGuide, /Projection:/);
+  assert.match(exportGuide, /Rendered artifact:/);
+  assert.match(exportGuide, /Do not discard the existing solve\/spec\/render flow/);
+  assert.match(exportGuide, /map-geometry visualization, not an operational dispatch package/);
+});
+
+test('readme advertises export shareability guidance', () => {
+  assert.match(readme, /Export\/share packets for briefing-ready SVG reuse, projection notes, and route-specific caveats/);
+  assert.match(readme, /references\/export-shareability\.md/);
 });
