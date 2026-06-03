@@ -12,6 +12,7 @@ Key capabilities:
 - ETOPS-aware map workflows
 - Airport lookup and coordinate enrichment
 - Projection comparison support
+- Concise great-circle explanations for curved, polar, or dateline-split route displays
 - SVG rendering for export-ready route visuals
 
 ## Best use cases
@@ -36,6 +37,7 @@ Typical startup from project root:
 - `SKILL.md` — trigger + workflow guidance
 - `references/local-setup.md` — local/offline setup details
 - `references/mapspec.md` — query/spec authoring notes
+- `references/great-circle-explanations.md` — route-specific projection explanation guidance
 - `assets/examples/*` — sample route specs
 - `agents/openai.yaml` — local MCP dependency wiring
 

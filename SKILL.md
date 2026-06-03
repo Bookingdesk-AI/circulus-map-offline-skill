@@ -1,7 +1,7 @@
 ---
 name: circulus-map-offline
 description: Use when the user wants aviation route maps, ETOPS-aware route analysis, projection comparisons, airport lookup, or SVG map rendering through a local Circulus Map MCP server. Prefer this skill for offline or bundled setups that should run against the local worker at http://127.0.0.1:8788/mcp, including quick-query route solving (`JFK-LHR`, `800nm@DEN`) and building or validating `MapSpecV1` payloads before rendering.
-version: 1.3.24
+version: 1.3.25
 ---
 
 # Circulus Map Offline
@@ -18,6 +18,7 @@ Use this skill when the task is about aviation route planning, map projections, 
 - Use `map.search_locations` before solving when the user is unsure about codes or city names, when a city has multiple plausible airports, or when a route mixes city names and IATA/ICAO codes.
 - Use `map.get_airport` when you need a single airport record with coordinates and runway metadata.
 - Use `map.render_svg` only after the route/spec is stable.
+- When a user asks why a route curves, looks indirect, crosses the pole, or splits near the dateline, give a concise great-circle/projection explanation tied to the solved route before continuing.
 
 ## Tool selection
 
@@ -39,13 +40,14 @@ Treat route input as an ordered intent, not just a string. Accept common phrasin
 ## Resources
 
 - Read `circulus://mapspec/schema` before authoring a non-trivial `MapSpecV1`.
-- Read `circulus://projection/guide` for projection choices.
+- Read `circulus://projection/guide` for projection choices and projection-specific wording.
 - Read `circulus://scenario/catalog` and `circulus://api/examples` when you need examples quickly.
 
 ## References
 
 - For local setup details and offline packaging expectations, read [references/local-setup.md](references/local-setup.md).
 - For quick query and spec-writing guidance, read [references/mapspec.md](references/mapspec.md).
+- For concise great-circle and projection-effect explanations, read [references/great-circle-explanations.md](references/great-circle-explanations.md).
 - For sample payloads, inspect `assets/examples` when bundled with this skill package.
 
 ## Guardrails
