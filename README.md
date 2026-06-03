@@ -11,7 +11,7 @@ Key capabilities:
 - Route input normalization for airport codes, city names, and natural-language connectors
 - ETOPS-aware map workflows
 - Airport lookup and coordinate enrichment
-- Projection comparison support
+- Projection comparison workflow with route-stable geometry notes and projection recommendations
 - Concise great-circle explanations for curved, polar, or dateline-split route displays
 - SVG rendering for export-ready route visuals
 
@@ -38,6 +38,7 @@ Typical startup from project root:
 - `references/local-setup.md` — local/offline setup details
 - `references/mapspec.md` — query/spec authoring notes
 - `references/great-circle-explanations.md` — route-specific projection explanation guidance
+- `references/projection-comparison.md` — compare-mode response pattern for projection differences
 - `assets/examples/*` — sample route specs
 - `agents/openai.yaml` — local MCP dependency wiring
 

@@ -1,7 +1,7 @@
 ---
 name: circulus-map-offline
 description: Use when the user wants aviation route maps, ETOPS-aware route analysis, projection comparisons, airport lookup, or SVG map rendering through a local Circulus Map MCP server. Prefer this skill for offline or bundled setups that should run against the local worker at http://127.0.0.1:8788/mcp, including quick-query route solving (`JFK-LHR`, `800nm@DEN`) and building or validating `MapSpecV1` payloads before rendering.
-version: 1.3.25
+version: 1.3.26
 ---
 
 # Circulus Map Offline
@@ -19,12 +19,13 @@ Use this skill when the task is about aviation route planning, map projections, 
 - Use `map.get_airport` when you need a single airport record with coordinates and runway metadata.
 - Use `map.render_svg` only after the route/spec is stable.
 - When a user asks why a route curves, looks indirect, crosses the pole, or splits near the dateline, give a concise great-circle/projection explanation tied to the solved route before continuing.
+- When a user asks to compare projections, first solve/stabilize the route, then give compare-oriented output: same route geometry, projection-specific visual differences, and one route-specific projection recommendation.
 
 ## Tool selection
 
 - `map.search_locations`: best first step for ambiguous airport/city input.
 - `map.solve_query`: fastest path for route-only requests and simple range rings after the route text is unambiguous.
-- `map.solve_spec`: use when the user cares about projection, ETOPS, labels, markers, or multiple paths.
+- `map.solve_spec`: use when the user cares about projection, ETOPS, labels, markers, multiple paths, or an explicit projection comparison.
 - `map.list_scenarios`: use when the user asks for examples or wants a starting point.
 - `map.render_svg`: use for final export-ready output, not exploration.
 
@@ -41,6 +42,7 @@ Treat route input as an ordered intent, not just a string. Accept common phrasin
 
 - Read `circulus://mapspec/schema` before authoring a non-trivial `MapSpecV1`.
 - Read `circulus://projection/guide` for projection choices and projection-specific wording.
+- Read [references/projection-comparison.md](references/projection-comparison.md) when the user wants a projection comparison or asks which projection to use for a route.
 - Read `circulus://scenario/catalog` and `circulus://api/examples` when you need examples quickly.
 
 ## References
@@ -48,6 +50,7 @@ Treat route input as an ordered intent, not just a string. Accept common phrasin
 - For local setup details and offline packaging expectations, read [references/local-setup.md](references/local-setup.md).
 - For quick query and spec-writing guidance, read [references/mapspec.md](references/mapspec.md).
 - For concise great-circle and projection-effect explanations, read [references/great-circle-explanations.md](references/great-circle-explanations.md).
+- For compare-mode response structure and projection recommendation guidance, read [references/projection-comparison.md](references/projection-comparison.md).
 - For sample payloads, inspect `assets/examples` when bundled with this skill package.
 
 ## Guardrails
