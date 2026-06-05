@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 
 const skillPath = 'SKILL.md';
 const readmePath = 'README.md';
+const inputPath = 'references/input-understanding.md';
 const guidePath = 'references/great-circle-explanations.md';
 const comparisonPath = 'references/projection-comparison.md';
 const edgePath = 'references/edge-case-handling.md';
@@ -11,13 +12,34 @@ const exportPath = 'references/export-shareability.md';
 
 const skill = readFileSync(skillPath, 'utf8');
 const readme = readFileSync(readmePath, 'utf8');
+const inputGuide = readFileSync(inputPath, 'utf8');
 const guide = readFileSync(guidePath, 'utf8');
 const comparison = readFileSync(comparisonPath, 'utf8');
 const edge = readFileSync(edgePath, 'utf8');
 const exportGuide = readFileSync(exportPath, 'utf8');
 
+test('skill exposes input understanding guidance', () => {
+  assert.match(skill, /version: 1\.3\.29/);
+  assert.match(skill, /route phrasing is ambiguous, malformed, city-name-heavy, or mixes prose with airport codes/);
+  assert.match(skill, /references\/input-understanding\.md/);
+  assert.equal(existsSync(inputPath), true);
+});
+
+test('input guide normalizes route phrasing without guessing', () => {
+  assert.match(inputGuide, /Preserve explicit airport-code tokens/);
+  assert.match(inputGuide, /Treat connectors as ordering signals/);
+  assert.match(inputGuide, /Do not render until every waypoint resolves/);
+  assert.match(inputGuide, /Ask one concise clarification question instead of guessing/);
+  assert.match(inputGuide, /Do not silently choose a default airport/);
+});
+
+test('readme advertises input understanding and ambiguity feedback', () => {
+  assert.match(readme, /Route input normalization and ambiguity feedback/);
+  assert.match(readme, /references\/input-understanding\.md/);
+});
+
+
 test('skill links the great-circle explanation guide', () => {
-  assert.match(skill, /version: 1\.3\.28/);
   assert.match(skill, /why a route curves, looks indirect, crosses the pole, or splits near the dateline/);
   assert.match(skill, /references\/great-circle-explanations\.md/);
   assert.equal(existsSync(guidePath), true);
