@@ -19,8 +19,10 @@ const edge = readFileSync(edgePath, 'utf8');
 const exportGuide = readFileSync(exportPath, 'utf8');
 
 test('skill exposes input understanding guidance', () => {
-  assert.match(skill, /version: 1\.3\.29/);
+  assert.match(skill, /version: 1\.3\.30/);
   assert.match(skill, /route phrasing is ambiguous, malformed, city-name-heavy, or mixes prose with airport codes/);
+  assert.match(skill, /Classify raw route text before tool calls/);
+  assert.match(skill, /ready_to_solve/);
   assert.match(skill, /references\/input-understanding\.md/);
   assert.equal(existsSync(inputPath), true);
 });
@@ -31,10 +33,14 @@ test('input guide normalizes route phrasing without guessing', () => {
   assert.match(inputGuide, /Do not render until every waypoint resolves/);
   assert.match(inputGuide, /Ask one concise clarification question instead of guessing/);
   assert.match(inputGuide, /Do not silently choose a default airport/);
+  assert.match(inputGuide, /Route-intent triage/);
+  assert.match(inputGuide, /needs_search/);
+  assert.match(inputGuide, /needs_clarification/);
+  assert.match(inputGuide, /Use the first blocking classification/);
 });
 
 test('readme advertises input understanding and ambiguity feedback', () => {
-  assert.match(readme, /Route input normalization and ambiguity feedback/);
+  assert.match(readme, /Route input normalization, intent triage, and ambiguity feedback/);
   assert.match(readme, /references\/input-understanding\.md/);
 });
 

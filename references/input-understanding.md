@@ -10,6 +10,19 @@ Use this guide before solving when the user gives route text that mixes airport 
 4. Keep waypoint order stable after normalization: origin first, destination last, `via` stops in the middle.
 5. Do not render until every waypoint resolves to one intended airport or coordinate.
 
+## Route-intent triage
+
+Classify the raw user text before calling solve tools. This keeps corrections short and prevents accidental guesses.
+
+| Classification | Use when | Next action | Example response |
+| --- | --- | --- | --- |
+| `ready_to_solve` | Two or more explicit IATA/ICAO-looking airport codes or coordinates are present and ordered | Normalize code case, preserve waypoint order, then call `map.solve_query` or `map.solve_spec` | `I'll solve JFK → LHR.` |
+| `needs_search` | One or more waypoints are city names, airport names, aliases, or mixed prose | Call `map.search_locations` for each prose waypoint before solving | `I'll resolve Heathrow and Dubai before rendering.` |
+| `needs_clarification` | Search or common knowledge indicates multiple plausible airports that would change the route | Ask one choice question; do not solve or render yet | `London can mean several airports. Do you want LHR, LGW, LCY, STN, LTN, or another airport?` |
+| `malformed` | Fewer than two waypoints, unclear ordering, unsupported place text, or ETOPS/radius text mistaken for a route | Stop and give one correction hint | `I need at least two airports or cities, like JFK-LHR or New York to London.` |
+
+Use the first blocking classification in the table: if a route has one exact code plus one ambiguous city, it is `needs_clarification`, not `ready_to_solve`.
+
 ## Common phrase patterns
 
 - `JFK-LHR`, `JFK → LHR`, `jfk to lhr` → solve as `JFK` → `LHR`.
