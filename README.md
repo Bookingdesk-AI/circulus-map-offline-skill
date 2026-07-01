@@ -8,7 +8,7 @@ Offline-first aviation route planning skill for MCP clients.
 
 Key capabilities:
 - Great-circle and route geometry solving
-- Route input normalization, intent triage, and ambiguity feedback for airport codes, city names, via stops, and natural-language connectors
+- Route input normalization, intent triage, ambiguity feedback, and example-matrix handling for airport codes, city names, via stops, range rings, and natural-language connectors
 - ETOPS-aware map workflows
 - Airport lookup and coordinate enrichment
 - Projection comparison workflow with route-stable geometry notes and projection recommendations
@@ -39,7 +39,7 @@ Typical startup from project root:
 - `SKILL.md` — trigger + workflow guidance
 - `references/local-setup.md` — local/offline setup details
 - `references/mapspec.md` — query/spec authoring notes
-- `references/input-understanding.md` — route normalization, route-intent triage, ambiguity handling, and malformed-input feedback
+- `references/input-understanding.md` — route normalization, route-intent triage, example matrix, ambiguity handling, and malformed-input feedback
 - `references/great-circle-explanations.md` — route-specific projection explanation guidance
 - `references/projection-comparison.md` — compare-mode response pattern for projection differences
 - `references/edge-case-handling.md` — preflight checks and messaging for dateline, polar, sparse-data, and unsupported cases

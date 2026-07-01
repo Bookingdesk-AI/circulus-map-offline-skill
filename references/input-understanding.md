@@ -30,6 +30,29 @@ Use the first blocking classification in the table: if a route has one exact cod
 - `Heathrow to Dubai` → resolve airport name/city text, then confirm if the result is not unique.
 - `SFO HND SIN` → treat as an ordered multi-leg route only after all tokens are recognized as airport codes.
 
+## Normalization examples matrix
+
+Use this matrix as a fast operator check before choosing a Circulus tool. It makes the expected handling explicit for common airport-code, city-name, route-phrasing, and malformed-input cases.
+
+| Raw input | Normalized intent | Classification | Tool/action | User-facing feedback |
+| --- | --- | --- | --- | --- |
+| `jfk-lhr` | `JFK → LHR` | `ready_to_solve` | Call `map.solve_query` with `JFK-LHR` | `I’ll solve JFK → LHR.` |
+| `SFO HND SIN` | `SFO → HND → SIN` | `ready_to_solve` after token recognition | Call `map.solve_query` or build ordered `MapSpecV1` waypoints | `I’ll solve SFO → HND → SIN in that order.` |
+| `from San Francisco to Tokyo via Honolulu` | `{San Francisco airport} → {Honolulu airport} → {Tokyo airport}` | `needs_search` | Call `map.search_locations` for each prose waypoint, then clarify any multi-airport result | `I’ll resolve San Francisco, Honolulu, and Tokyo before rendering.` |
+| `Heathrow to Dubai` | likely `LHR → DXB`, pending search confidence | `needs_search` | Search both names; solve only if each resolves uniquely enough for the task | `I’ll resolve Heathrow and Dubai first so the airport codes are explicit.` |
+| `New York to London` | ambiguous metro pair | `needs_clarification` | Search or list likely airports; ask one choice question before solving | `New York and London each have multiple airports. Which codes should I use, e.g. JFK/EWR/LGA to LHR/LGW/LCY/STN/LTN?` |
+| `LAX to Tokyo` | exact origin, ambiguous destination metro | `needs_clarification` | Preserve `LAX`; ask for Tokyo airport choice | `Tokyo can mean several airports. Do you want HND, NRT, or another airport?` |
+| `JFK` | one waypoint only | `malformed` | Do not call solve/render | `I found only one waypoint. Add a destination, for example JFK → LHR.` |
+| `800nm@DEN` | range ring centered on `DEN`, not an airport route | `malformed` for route flow; valid range-ring intent if user asks for radius | Use range-ring/spec guidance instead of route solving | `That looks like a range ring, not an airport-to-airport route; I can map 800 nm around DEN or you can add a destination.` |
+| `Paris to Springfield` | broad/ambiguous names | `needs_clarification` | Search both names; ask for the first blocking ambiguous waypoint | `Springfield can mean several places. Which airport or city/state should I use?` |
+
+Rules for the matrix:
+
+- Preserve exact-code waypoints even when another waypoint needs search or clarification.
+- Ask only for the first blocking ambiguity unless multiple choices must be made together to avoid a misleading route.
+- Do not render from the normalized intent column until the classification has become `ready_to_solve`.
+- Keep range-ring syntax separate from route solving so `800nm@DEN` is not mistaken for a one-waypoint malformed route when the user clearly wants coverage.
+
 ## Ambiguity handling
 
 Ask one concise clarification question instead of guessing when a place can change route meaning:

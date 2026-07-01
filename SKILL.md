@@ -1,7 +1,7 @@
 ---
 name: circulus-map-offline
 description: Use when the user wants aviation route maps, ETOPS-aware route analysis, projection comparisons, airport lookup, or SVG map rendering through a local Circulus Map MCP server. Prefer this skill for offline or bundled setups that should run against the local worker at http://127.0.0.1:8788/mcp, including quick-query route solving (`JFK-LHR`, `800nm@DEN`) and building or validating `MapSpecV1` payloads before rendering.
-version: 1.3.30
+version: 1.3.31
 ---
 
 # Circulus Map Offline
@@ -18,6 +18,7 @@ Use this skill when the task is about aviation route planning, map projections, 
 - Use `map.search_locations` before solving when the user is unsure about codes or city names, when a city has multiple plausible airports, or when a route mixes city names and IATA/ICAO codes; if route intent is ambiguous or malformed, use the input-understanding guide for a concise clarification instead of guessing.
 - Classify raw route text before tool calls: solve exact-code pairs directly, search city/airport prose, ask one clarification for multiple plausible airports, and stop with a correction hint for one-waypoint or unsupported input.
 - Use `map.get_airport` when you need a single airport record with coordinates and runway metadata.
+- For quick operator checks, use the normalization examples in [references/input-understanding.md](references/input-understanding.md) to distinguish code-only, city-name, via-stop, ambiguous, malformed, and ETOPS/radius inputs before touching render tools.
 - Use `map.render_svg` only after the route/spec is stable.
 - When a user asks why a route curves, looks indirect, crosses the pole, or splits near the dateline, give a concise great-circle/projection explanation tied to the solved route before continuing.
 - When a user asks to compare projections, first solve/stabilize the route, then give compare-oriented output: same route geometry, projection-specific visual differences, and one route-specific projection recommendation.
@@ -41,7 +42,8 @@ Treat route input as an ordered intent, not just a string. Accept common phrasin
 3. Classify the input with the route-intent triage in [references/input-understanding.md](references/input-understanding.md): `ready_to_solve`, `needs_search`, `needs_clarification`, or `malformed`.
 4. Resolve city names, airport names, and mixed inputs with `map.search_locations`; if multiple airports are plausible, ask the user to choose instead of guessing.
 5. Preserve user-stated waypoint order, including `via` stops, and do not render until every waypoint resolves to one intended airport or coordinate.
-6. For ambiguous or malformed input, read [references/input-understanding.md](references/input-understanding.md) and give one concise clarification or correction hint, for example: `I need at least two airports or cities, like JFK-LHR or New York to London.`
+6. Match common cases against the example matrix in [references/input-understanding.md](references/input-understanding.md) so city-name routes, via stops, whitespace-delimited code routes, ambiguous metros, and range-ring inputs get consistent next actions.
+7. For ambiguous or malformed input, read [references/input-understanding.md](references/input-understanding.md) and give one concise clarification or correction hint, for example: `I need at least two airports or cities, like JFK-LHR or New York to London.`
 
 ## Resources
 

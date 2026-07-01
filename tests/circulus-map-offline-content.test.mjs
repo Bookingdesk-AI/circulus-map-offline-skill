@@ -19,7 +19,7 @@ const edge = readFileSync(edgePath, 'utf8');
 const exportGuide = readFileSync(exportPath, 'utf8');
 
 test('skill exposes input understanding guidance', () => {
-  assert.match(skill, /version: 1\.3\.30/);
+  assert.match(skill, /version: 1\.3\.31/);
   assert.match(skill, /route phrasing is ambiguous, malformed, city-name-heavy, or mixes prose with airport codes/);
   assert.match(skill, /Classify raw route text before tool calls/);
   assert.match(skill, /ready_to_solve/);
@@ -40,8 +40,21 @@ test('input guide normalizes route phrasing without guessing', () => {
 });
 
 test('readme advertises input understanding and ambiguity feedback', () => {
-  assert.match(readme, /Route input normalization, intent triage, and ambiguity feedback/);
+  assert.match(readme, /Route input normalization, intent triage, ambiguity feedback, and example-matrix handling/);
   assert.match(readme, /references\/input-understanding\.md/);
+});
+
+
+test('input guide includes an operator normalization examples matrix', () => {
+  assert.match(skill, /normalization examples/);
+  assert.match(inputGuide, /Normalization examples matrix/);
+  assert.match(inputGuide, /jfk-lhr/);
+  assert.match(inputGuide, /SFO HND SIN/);
+  assert.match(inputGuide, /from San Francisco to Tokyo via Honolulu/);
+  assert.match(inputGuide, /New York to London/);
+  assert.match(inputGuide, /800nm@DEN/);
+  assert.match(inputGuide, /range ring, not an airport-to-airport route/);
+  assert.match(inputGuide, /Do not render from the normalized intent column until the classification has become `ready_to_solve`/);
 });
 
 
